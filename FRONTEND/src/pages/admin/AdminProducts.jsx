@@ -6,7 +6,7 @@ import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
 
 export default function AdminProducts() {
-  const [form, setForm] = useState({ name: "", price: "", description: "", image: "" });
+  const [form, setForm] = useState({ name: "", price: "", description: "", images: [] });
   const [message, setMessage] = useState("");
   const [uploading, setUploading] = useState(false);
 
@@ -17,34 +17,46 @@ export default function AdminProducts() {
         name: form.name,
         description: form.description,
         price: Number(form.price),
-        image: form.image,
+        images: form.images,
+        // keep single image field for compatibility (first image)
+        image: form.images && form.images.length > 0 ? form.images[0] : '',
       });
       setMessage("Product created");
-      setForm({ name: "", price: "", description: "", image: "" });
+      setForm({ name: "", price: "", description: "", images: [] });
     } catch (err) {
       setMessage(err?.response?.data?.message || "Failed to create product");
     }
   };
 
   const handleFileChange = async (e) => {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-    const formData = new FormData();
-    formData.append("image", file);
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setUploading(true);
+    setMessage('Uploading images...');
+
     try {
-      setUploading(true);
-      setMessage("Uploading image...");
-      const { data } = await axiosInstance.post('/uploads', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      setForm((s) => ({ ...s, image: data.url }));
-      setMessage("Image uploaded");
+      const uploadedUrls = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const formData = new FormData();
+        formData.append('image', file);
+        const { data } = await axiosInstance.post('/uploads', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        if (data?.url) uploadedUrls.push(data.url);
+      }
+      setForm((s) => ({ ...s, images: [...s.images, ...uploadedUrls] }));
+      setMessage('Images uploaded');
     } catch (err) {
       console.error(err);
       setMessage(err?.response?.data?.message || 'Image upload failed');
     } finally {
       setUploading(false);
     }
+  };
+
+  const removeImage = (idx) => {
+    setForm((s) => ({ ...s, images: s.images.filter((_, i) => i !== idx) }));
   };
 
   return (
@@ -83,13 +95,21 @@ export default function AdminProducts() {
               }
             />
 
-            {/* Image upload input */}
+            {/* Image upload input (multiple) */}
             <div>
-              <label className="text-sm text-[#2b1a12] mb-1 block">Image</label>
-              <input type="file" accept="image/*" onChange={handleFileChange} />
+              <label className="text-sm text-[#2b1a12] mb-1 block">Images</label>
+              <input type="file" accept="image/*" multiple onChange={handleFileChange} />
               {uploading && <p className="text-xs text-gray-500 mt-2">Uploading...</p>}
-              {form.image && (
-                <img src={form.image} alt="preview" className="w-32 mt-2 rounded" />
+
+              {form.images && form.images.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {form.images.map((src, idx) => (
+                    <div key={idx} className="relative">
+                      <img src={src} alt={`img-${idx}`} className="w-24 h-24 object-cover rounded" />
+                      <button type="button" onClick={() => removeImage(idx)} className="absolute -top-2 -right-2 bg-white rounded-full px-1.5">✕</button>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
 

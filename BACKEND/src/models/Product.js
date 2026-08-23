@@ -16,9 +16,14 @@ const productSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
+    // Keep single image for backward compatibility, but prefer images array
     image: {
       type: String,
       default: '',
+    },
+    images: {
+      type: [String],
+      default: [],
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,

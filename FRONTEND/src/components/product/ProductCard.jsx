@@ -3,10 +3,11 @@ import { formatCurrency } from "../../utils/formatCurrency";
 import { Link } from "react-router-dom";
 
 export default function ProductCard({ product, onAddToCart }) {
+  const thumbnail = (product.images && product.images[0]) || product.image || "https://placehold.co/600x400?text=Product";
   return (
     <article className="card bg-white rounded-2xl shadow-sm border border-amber-900/10 overflow-hidden flex flex-col hover:shadow-md transition">
       <img
-        src={product.image || "https://placehold.co/600x400?text=Product"}
+        src={thumbnail}
         alt={product.name}
         className="w-full h-48 object-cover"
       />
