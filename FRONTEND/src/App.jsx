@@ -1,12 +1,20 @@
+import './App.css';
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
+import MobileMenu from './components/layout/MobileMenu';
+import AppRoutes from './routes/AppRoutes';
+
 function App() {
   return (
-    <>
-      {/* class ki jagah className use karein */}
-      <h1 className="text-3xl font-bold underline text-blue-600">
-        Hello world!
-      </h1>
-    </>
-  )
+    <div className="app-shell">
+      <Navbar />
+      <main className="main-content">
+        <AppRoutes />
+      </main>
+      <MobileMenu />
+      <Footer />
+    </div>
+  );
 }
 
 export default App;
