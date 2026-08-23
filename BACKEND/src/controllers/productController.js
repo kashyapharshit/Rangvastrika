@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler');
-const Product = require('../models/Product');
-const ApiFeatures = require('../utils/ApiFeatures');
+const Product = require('../models/product');
+const ApiFeatures = require('../utils/apiFeatures');
 
 const getProducts = asyncHandler(async (req, res) => {
   const features = new ApiFeatures(Product.find(), req.query)

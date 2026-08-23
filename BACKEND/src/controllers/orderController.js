@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const Order = require('../models/Order');
+const Order = require('../models/order');
 
 const createOrder = asyncHandler(async (req, res) => {
   const order = await Order.create({
