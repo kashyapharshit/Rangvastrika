@@ -29,6 +29,19 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
     },
+    sizes: {
+      type: [String],
+      default: [],
+    },
+    material: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    weather: {
+      type: [String],
+      default: [],
+    },
     countInStock: {
       type: Number,
       default: 0,

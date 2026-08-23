@@ -35,6 +35,10 @@ export default function ProductDetails() {
     );
 
   const images = (product.images && product.images.length > 0) ? product.images : (product.image ? [product.image] : []);
+  const sizes = Array.isArray(product.sizes) ? product.sizes : [];
+  const weather = Array.isArray(product.weather) ? product.weather : [];
+  const stockCount = Number(product.countInStock || 0);
+  const inStock = stockCount > 0;
 
   return (
     <section
@@ -52,6 +56,24 @@ export default function ProductDetails() {
         <p className="text-xl font-semibold text-[#7a5236] mb-6">
           {formatCurrency(product.price)}
         </p>
+        <div className="mb-6 rounded-xl border border-amber-900/15 bg-white/60 p-4 text-sm text-[#4a2f1d] space-y-2">
+          <p>
+            <span className="font-semibold">Sizes:</span>{" "}
+            {sizes.length ? sizes.join(", ") : "N/A"}
+          </p>
+          <p>
+            <span className="font-semibold">Material:</span>{" "}
+            {product.material || "N/A"}
+          </p>
+          <p>
+            <span className="font-semibold">Weather:</span>{" "}
+            {weather.length ? weather.join(", ") : "N/A"}
+          </p>
+          <p>
+            <span className="font-semibold">Stock:</span>{" "}
+            {inStock ? `${stockCount} available` : "Out of stock"}
+          </p>
+        </div>
         <Button onClick={() => addToCart(product)} className="px-8">
           Add to Cart
         </Button>
