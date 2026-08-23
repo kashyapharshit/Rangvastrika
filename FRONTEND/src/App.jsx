@@ -8,7 +8,8 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 w-full max-w-[1100px] mx-auto px-4 sm:px-6 py-8">
+      {/* Yahan se max-w, mx-auto, aur px/py hata diya gaya hai */}
+      <main className="flex-1 w-full">
         <AppRoutes />
       </main>
       <FloatingWhatsAppButton />
