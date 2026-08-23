@@ -1,6 +1,7 @@
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import MobileMenu from "./components/layout/MobileMenu";
+import FloatingWhatsAppButton from "./components/layout/FloatingWhatsAppButton";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       <main className="flex-1 w-full max-w-[1100px] mx-auto px-4 sm:px-6 py-8">
         <AppRoutes />
       </main>
+      <FloatingWhatsAppButton />
       <MobileMenu />
       <Footer />
     </div>

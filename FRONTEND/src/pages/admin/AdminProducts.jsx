@@ -12,7 +12,16 @@ import Input from "../../components/common/Input";
 import { useFetch } from "../../hooks/useFetch";
 import { formatCurrency } from "../../utils/formatCurrency";
 
-const emptyForm = { name: "", price: "", description: "", images: [] };
+const emptyForm = {
+  name: "",
+  price: "",
+  description: "",
+  sizes: "",
+  material: "",
+  weather: "",
+  stock: "",
+  images: [],
+};
 
 export default function AdminProducts() {
   const [form, setForm] = useState(emptyForm);
@@ -42,6 +51,16 @@ export default function AdminProducts() {
       name: form.name,
       description: form.description,
       price: Number(form.price),
+      sizes: form.sizes
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean),
+      material: form.material.trim(),
+      weather: form.weather
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean),
+      countInStock: Number(form.stock || 0),
       images: form.images,
       image: form.images && form.images.length > 0 ? form.images[0] : "",
     };
@@ -99,6 +118,10 @@ export default function AdminProducts() {
       name: product.name || "",
       price: product.price ?? "",
       description: product.description || "",
+      sizes: Array.isArray(product.sizes) ? product.sizes.join(", ") : "",
+      material: product.material || "",
+      weather: Array.isArray(product.weather) ? product.weather.join(", ") : "",
+      stock: product.countInStock ?? 0,
       images:
         product.images && product.images.length > 0
           ? product.images
@@ -160,6 +183,35 @@ export default function AdminProducts() {
                   setForm({ ...form, description: e.target.value })
                 }
               />
+              <Input
+                id="product-sizes"
+                label="Sizes (comma separated)"
+                placeholder="S, M, L, XL"
+                value={form.sizes}
+                onChange={(e) => setForm({ ...form, sizes: e.target.value })}
+              />
+              <Input
+                id="product-material"
+                label="Material"
+                placeholder="Cotton, Silk..."
+                value={form.material}
+                onChange={(e) => setForm({ ...form, material: e.target.value })}
+              />
+              <Input
+                id="product-weather"
+                label="Weather suitability (comma separated)"
+                placeholder="Summer, Winter, All-season"
+                value={form.weather}
+                onChange={(e) => setForm({ ...form, weather: e.target.value })}
+              />
+              <Input
+                id="product-stock"
+                type="number"
+                min="0"
+                label="Stock"
+                value={form.stock}
+                onChange={(e) => setForm({ ...form, stock: e.target.value })}
+              />
 
               <div>
                 <label className="text-sm text-[#2b1a12] mb-1 block">Images</label>
@@ -213,6 +265,16 @@ export default function AdminProducts() {
                   <div>
                     <p className="text-sm font-semibold text-[#2b1a12]">{product.name}</p>
                     <p className="text-sm text-gray-600">{formatCurrency(product.price)}</p>
+                    <p className="text-xs text-gray-500">
+                      Sizes: {Array.isArray(product.sizes) && product.sizes.length ? product.sizes.join(", ") : "N/A"}
+                    </p>
+                    <p className="text-xs text-gray-500">Material: {product.material || "N/A"}</p>
+                    <p className="text-xs text-gray-500">
+                      Weather: {Array.isArray(product.weather) && product.weather.length ? product.weather.join(", ") : "N/A"}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Stock: {Number(product.countInStock || 0)}
+                    </p>
                   </div>
                   <div className="flex items-center gap-2">
                     <Button className="px-3 py-1.5 text-xs" onClick={() => startEdit(product)}>
