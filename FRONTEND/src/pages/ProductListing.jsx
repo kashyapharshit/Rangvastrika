@@ -9,13 +9,13 @@ import { useFetch } from '../hooks/useFetch';
 
 export default function ProductListing() {
   const { addToCart } = useCart();
-  const { data: products = [], loading, error } = useFetch(getProducts);
+  const { data: products, loading, error } = useFetch(getProducts);
   const [search, setSearch] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const debouncedSearch = useDebounce(search, 250);
 
   const filteredProducts = useMemo(() => {
-    return products.filter((product) => {
+    return (products || []).filter((product) => {
       const matchesSearch = product.name.toLowerCase().includes(debouncedSearch.toLowerCase());
       const numericMin = Number(minPrice || 0);
       const matchesPrice = Number(product.price || 0) >= numericMin;

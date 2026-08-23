@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AddressForm from '../components/checkout/AddressForm';
 import OrderSummary from '../components/checkout/OrderSummary';
-import WhatsAppCheckoutButton from '../components/checkout/WhatsAppCheckoutButton';
 import Button from '../components/common/Button';
 import { useCart } from '../hooks/useCart';
 import { createOrder } from '../api/orderApi';
 import { validateAddress } from '../utils/validators';
+import { buildWhatsAppOrderLink } from '../utils/whatsapp';
 
 export default function Checkout() {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function Checkout() {
     setError('');
 
     try {
-      await createOrder({
+      const order = await createOrder({
         shippingAddress,
         totalPrice: total,
         orderItems: items.map((item) => ({
@@ -35,6 +35,9 @@ export default function Checkout() {
           price: Number(item.price || 0),
         })),
       });
+
+      const whatsappLink = buildWhatsAppOrderLink(order, items);
+      window.open(whatsappLink, '_blank', 'noopener,noreferrer');
 
       clearCart();
       navigate('/order-success');
@@ -50,10 +53,9 @@ export default function Checkout() {
       <h1>Checkout</h1>
       <AddressForm value={shippingAddress} onChange={setShippingAddress} />
       <OrderSummary items={items} total={total} />
-      <WhatsAppCheckoutButton message={`Hi, I want to confirm my order worth ₹${total}.`} />
       {error && <p className="error">{error}</p>}
       <Button onClick={submitOrder} disabled={!items.length || loading}>
-        {loading ? 'Placing order...' : 'Place Order'}
+        {loading ? 'Placing order...' : 'Place Order via WhatsApp'}
       </Button>
     </section>
   );

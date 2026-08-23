@@ -9,10 +9,13 @@ import { formatCurrency } from '../utils/formatCurrency';
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const { data: products = [], loading, error } = useFetch(getProducts);
+  const { data: products, loading, error } = useFetch(getProducts);
   const { addToCart } = useCart();
 
-  const product = useMemo(() => products.find((item) => item._id === id), [products, id]);
+  const product = useMemo(
+    () => (products || []).find((item) => item._id === id),
+    [products, id]
+  );
 
   if (loading) return <p className="page">Loading product...</p>;
   if (error) return <p className="page error">{error}</p>;
