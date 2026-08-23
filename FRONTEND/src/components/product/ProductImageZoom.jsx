@@ -1,16 +1,36 @@
 import { useState } from "react";
 
-export default function ProductImageZoom({ src, alt }) {
+export default function ProductImageZoom({ src, images = [], alt }) {
+  const imgList = (images && images.length > 0) ? images : (src ? [src] : []);
+  const [selected, setSelected] = useState(0);
   const [zoom, setZoom] = useState(false);
 
+  const mainSrc = imgList[selected] || "https://placehold.co/800x600?text=Product";
+
   return (
-    <img
-      className={`rounded-2xl border border-amber-900/10 cursor-zoom-in transition-transform duration-300 ${
-        zoom ? "zoomed scale-150 cursor-zoom-out" : "scale-100"
-      }`}
-      src={src || "https://placehold.co/800x600?text=Product"}
-      alt={alt}
-      onClick={() => setZoom((current) => !current)}
-    />
+    <div className="product-image-zoom flex flex-col items-start gap-4">
+      <img
+        className={`rounded-2xl border border-amber-900/10 cursor-zoom-in transition-transform duration-300 ${zoom ? "zoomed scale-150 cursor-zoom-out" : "scale-100"}`}
+        src={mainSrc}
+        alt={alt}
+        onClick={() => setZoom((current) => !current)}
+        style={{ maxWidth: '100%', objectFit: 'cover' }}
+      />
+
+      {imgList.length > 1 && (
+        <div className="flex gap-2">
+          {imgList.map((s, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => { setSelected(idx); setZoom(false); }}
+              className={`rounded overflow-hidden border ${selected === idx ? 'border-amber-700' : 'border-amber-900/10'}`}
+            >
+              <img src={s} alt={`thumb-${idx}`} className="w-20 h-20 object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
