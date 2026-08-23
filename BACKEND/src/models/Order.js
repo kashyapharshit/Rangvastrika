@@ -7,6 +7,15 @@ const orderItemSchema = new mongoose.Schema(
       ref: 'Product',
       required: true,
     },
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    image: {
+      type: String,
+      default: '',
+    },
     quantity: {
       type: Number,
       required: true,
@@ -28,6 +37,27 @@ const orderSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    customerDetails: {
+      name: {
+        type: String,
+        default: '',
+      },
+      mobile: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      email: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      address: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+    },
     orderItems: {
       type: [orderItemSchema],
       required: true,
@@ -42,9 +72,10 @@ const orderSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
-    isPaid: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      enum: ['Pending', 'Processing', 'Shipped', 'Delivered'],
+      default: 'Pending',
     },
   },
   { timestamps: true }
