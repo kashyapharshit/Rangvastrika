@@ -50,10 +50,10 @@ export default function ProductDetails() {
 
   return (
     // 1. Full-width Background Container
-    <div className="w-full min-h-screen bg-[#FBF3E9] py-10">
+    <div className="w-full min-h-screen bg-[#FBF3E9] py-6 sm:py-10">
       
       {/* 2. Centered Content Container */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mobile-container">
         
         {/* Breadcrumb / Back Navigation */}
         <div className="mb-6">
@@ -63,11 +63,11 @@ export default function ProductDetails() {
         </div>
 
         {/* 3. Main Product Card */}
-        <section className="bg-white rounded-3xl shadow-sm border border-[#7a5236]/15 overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 p-6 sm:p-10 items-start">
+        <section className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-[#7a5236]/15 overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 p-4 sm:p-10 items-start">
             
             {/* Left: Product Image */}
-            <div className="w-full rounded-2xl overflow-hidden bg-[#FBF3E9]/50 border border-gray-100">
+            <div className="w-full max-w-xl mx-auto md:max-w-none rounded-2xl overflow-hidden bg-[#FBF3E9]/50 border border-gray-100">
               <ProductImageZoom images={images} alt={product.name} />
             </div>
             

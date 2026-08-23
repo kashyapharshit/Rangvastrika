@@ -30,10 +30,10 @@ export default function ProductListing() {
     <div className="w-full min-h-screen" style={{ backgroundColor: "#FBF7F2" }}>
       
       {/* 2. INNER CONTAINER: यहाँ max-w-7xl है ताकि कंटेंट बीच में रहे */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-8 py-10">
+      <section className="max-w-7xl mx-auto px-4 sm:px-8 py-6 sm:py-10">
         
         {/* Heading ko thoda bada aur sundar kar diya gaya hai */}
-        <h1 className="text-4xl font-serif font-bold text-[#2b1a12] mb-8">
+        <h1 className="text-3xl sm:text-4xl font-serif font-bold text-[#2b1a12] mb-6 sm:mb-8">
           Products
         </h1>
         

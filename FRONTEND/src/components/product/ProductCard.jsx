@@ -63,7 +63,7 @@ export default function ProductCard({ product, onAddToCart }) {
         <div className="mt-auto grid grid-cols-2 gap-3">
           <Link
             to={`/products/${product._id}`}
-            className="flex items-center justify-center px-4 py-2 text-sm font-medium text-[#4a2f1d] bg-[#FBF3E9] rounded-xl hover:bg-[#f3e3d0] transition-colors"
+            className="touch-target flex items-center justify-center px-4 py-2 text-sm font-medium text-[#4a2f1d] bg-[#FBF3E9] rounded-xl hover:bg-[#f3e3d0] transition-colors"
           >
             Details
           </Link>

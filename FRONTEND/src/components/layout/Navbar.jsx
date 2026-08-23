@@ -59,10 +59,10 @@ export default function Navbar() {
 
   // --- Styles ---
   // Normal text links ke liye (बिना बॉर्डर के)
-  const navTextStyles = "text-white/90 hover:text-[#F3E3D0] text-sm font-medium transition-colors duration-300";
+  const navTextStyles = "inline-flex items-center text-white/90 hover:text-[#F3E3D0] text-sm font-medium transition-colors duration-300 touch-target";
   
   // Action buttons ke liye (Cart, Login aadi)
-  const actionBtnStyles = "flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white text-sm font-medium hover:bg-white/20 transition-all";
+  const actionBtnStyles = "touch-target flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white text-sm font-medium hover:bg-white/20 transition-all";
 
   return (
     <nav
@@ -109,7 +109,7 @@ export default function Navbar() {
           />
           <button
             type="submit"
-            className="px-6 py-2.5 text-sm font-medium text-white hover:opacity-90 transition"
+            className="touch-target px-5 py-2.5 text-sm font-medium text-white hover:opacity-90 transition"
             style={{ backgroundColor: "#7a5236" }}
           >
             Search
@@ -118,13 +118,13 @@ export default function Navbar() {
 
         {/* Suggestions Dropdown */}
         {showSuggestions && suggestions.length > 0 && (
-          <div className="absolute top-full left-0 mt-3 w-full bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+          <div className="absolute top-full left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 mt-3 w-full max-w-[calc(100vw-2rem)] bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50">
             {suggestions.map((product) => (
               <button
                 key={product._id}
                 type="button"
                 onClick={() => handleSuggestionClick(product)}
-                className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-orange-50 transition border-b border-gray-100 last:border-b-0"
+                className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left hover:bg-orange-50 transition border-b border-gray-100 last:border-b-0 touch-target"
               >
                 <span className="text-sm text-gray-800 line-clamp-1">
                   {product.name}
@@ -137,7 +137,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => goToResults(searchTerm)}
-              className="w-full text-center text-xs font-medium text-gray-500 py-3 hover:bg-gray-50 transition bg-gray-50/50"
+              className="w-full text-center text-xs font-medium text-gray-500 py-3 hover:bg-gray-50 transition bg-gray-50/50 touch-target"
             >
               See all results for "{searchTerm}"
             </button>
@@ -178,7 +178,7 @@ export default function Navbar() {
               </Link>
             )}
             
-            <button type="button" onClick={logout} className="text-white/70 hover:text-red-400 transition" title="Logout">
+            <button type="button" onClick={logout} className="touch-target text-white/70 hover:text-red-400 transition" title="Logout">
               <LogOut size={20} />
             </button>
           </>
