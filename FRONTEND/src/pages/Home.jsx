@@ -17,7 +17,17 @@ export default function Home() {
 
   const { data: products, loading, error } = useFetch(getProducts);
 
-  const sliderImages = [image0,image1, image2, image3];
+  const sliderImages = [image0, image1, image2, image3];
+
+  // Har image ka crop-focus point (mobile pe zyada crop hota hai isliye tune karo)
+ // Har image ka crop-focus: mobile pe alag, desktop pe alag
+// format: "mobile-position sm:desktop-position"
+const imagePositions = [
+  "object-center sm:object-center",           // image0
+  "object-[25%_center] sm:object-center",     // image1 - mannequin left side pe hai, mobile pe usko dikhane ke liye left-focus
+  "object-center sm:object-center",           // image2
+  "object-top sm:object-[center_30%]",        // image3 (16:9, widest) - mobile pe top-focus
+];
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -26,7 +36,6 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [sliderImages.length]);
 
-  // Sirf latest 6 products (bade cards mein dikhane ke liye)
   const displayProducts = products ? products.slice(0, 6) : [];
 
   const scrollToProducts = () => {
@@ -36,62 +45,64 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen w-full">
       {/* --- HERO SECTION (SLIDER) --- */}
-<section className="relative h-[85vh] w-full flex items-center justify-center overflow-hidden">
-  {sliderImages.map((img, index) => (
-    <div
-      key={index}
-      className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out ${
-        index === currentSlide ? "opacity-100" : "opacity-0"
-      }`}
-      style={{ backgroundImage: `url('${img}')` }}
-    />
-  ))}
+      <section className="relative h-[70vh] sm:h-[80vh] lg:h-[85vh] w-full flex items-center justify-center overflow-hidden">
+        {sliderImages.map((img, index) => (
+          <img
+            key={index}
+            src={img}
+            alt=""
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+              index === currentSlide ? "opacity-100" : "opacity-0"
+            } ${imagePositions[index]}`}
+          />
+        ))}
 
-  {/* Halka gradient - sirf text readability ke liye, background nahi dikhega */}
-  <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
+        {/* Halka gradient - sirf text readability ke liye */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
 
- <div className="hero-content relative z-10 text-center flex flex-col items-center max-w-3xl mx-4 px-4">
-  <span className="hero-tagline text-sm sm:text-base md:text-lg font-semibold uppercase text-[#F3E3D0] mb-3 sm:mb-5">
-    Ethnic Elegance & Textiles
-  </span>
-  <h1 className="hero-title text-5xl sm:text-7xl md:text-8xl font-serif font-bold text-white mb-6 sm:mb-8">
-    Rangvastrika Store
-  </h1>
-  <p className="hero-desc text-lg sm:text-xl md:text-2xl text-gray-100 mb-8 sm:mb-10 leading-relaxed max-w-xl">
-    Handpicked ethnic products and handcrafted collections, curated for every occasion.
-  </p>
-  <Link
-    to="/products"
-    className="hero-btn px-10 py-4 rounded-full text-white text-base sm:text-lg font-medium transition duration-300 hover:scale-105"
-    style={{ backgroundColor: "#7a5236" }}
-  >
-    Browse products
-  </Link>
-  <p className="hero-hindi text-[#F3E3D0] mt-7 font-serif text-xl sm:text-2xl">रंगवस्त्रिका स्टोर</p>
-</div>
+        <div className="hero-content relative z-10 text-center flex flex-col items-center max-w-3xl mx-4 px-4">
+          <span className="hero-tagline text-sm sm:text-base md:text-lg font-semibold uppercase text-[#F3E3D0] mb-3 sm:mb-5">
+            Ethnic Elegance & Textiles
+          </span>
+          <h1 className="hero-title text-5xl sm:text-7xl md:text-8xl font-serif font-bold text-white mb-6 sm:mb-8">
+            Rangvastrika Store
+          </h1>
+          <p className="hero-desc text-lg sm:text-xl md:text-2xl text-gray-100 mb-8 sm:mb-10 leading-relaxed max-w-xl">
+            Handpicked ethnic products and handcrafted collections, curated for every occasion.
+          </p>
+          <Link
+            to="/products"
+            className="hero-btn px-10 py-4 rounded-full text-white text-base sm:text-lg font-medium transition duration-300 hover:scale-105"
+            style={{ backgroundColor: "#7a5236" }}
+          >
+            Browse products
+          </Link>
+          <p className="hero-hindi text-[#F3E3D0] mt-7 font-serif text-xl sm:text-2xl">रंगवस्त्रिका स्टोर</p>
+        </div>
 
-  {/* Slider dots */}
-  <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-10">
-    {sliderImages.map((_, index) => (
-      <button
-        key={index}
-        onClick={() => setCurrentSlide(index)}
-        className={`w-3 h-3 rounded-full transition-all duration-300 ${
-          index === currentSlide ? "bg-white scale-125" : "bg-white/50"
-        }`}
-      />
-    ))}
-  </div>
+        {/* Slider dots */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-10">
+          {sliderImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                index === currentSlide ? "bg-white scale-125" : "bg-white/50"
+              }`}
+            />
+          ))}
+        </div>
 
-  {/* Scroll down arrow */}
-  <button
-    onClick={scrollToProducts}
-    aria-label="Scroll to products"
-    className="absolute bottom-20 sm:bottom-8 right-8 z-10 text-white/80 hover:text-white transition-colors animate-bounce"
-  >
-    <ChevronDown size={32} />
-  </button>
-</section>
+        {/* Scroll down arrow */}
+        <button
+          onClick={scrollToProducts}
+          aria-label="Scroll to products"
+          className="absolute bottom-20 sm:bottom-8 right-8 z-10 text-white/80 hover:text-white transition-colors animate-bounce"
+        >
+          <ChevronDown size={32} />
+        </button>
+      </section>
+
       {/* --- DYNAMIC PRODUCTS SECTION --- */}
       <section id="latest-collection" className="py-20 px-4 sm:px-8 bg-[#FBF3E9]/30 w-full">
         <div className="max-w-6xl mx-auto">
@@ -114,7 +125,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* Bade cards - 3 columns max, 2 rows */}
           {!loading && !error && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {displayProducts.map((product) => (
