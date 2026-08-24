@@ -9,6 +9,7 @@ import { formatCurrency } from "../utils/formatCurrency";
 import image1 from "../assets/image1.png";
 import image2 from "../assets/image2.png";
 import image3 from "../assets/image3.png";
+import image0 from "../assets/image0.png";
 import "./Home.css";
 
 export default function Home() {
@@ -16,7 +17,7 @@ export default function Home() {
 
   const { data: products, loading, error } = useFetch(getProducts);
 
-  const sliderImages = [image1, image2, image3];
+  const sliderImages = [image0,image1, image2, image3];
 
   useEffect(() => {
     const timer = setInterval(() => {
